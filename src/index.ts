@@ -25,7 +25,7 @@ app.get(
     res: Response<ResponseData<Pet>>,
   ): void => {
     try {
-      const { adopted } = req.query;
+      const { adopted, species } = req.query;
 
       let filteredPets: Pet[] = pets;
 
@@ -33,6 +33,13 @@ app.get(
         filteredPets = pets.filter(
           (pet: Pet): boolean =>
             pet.adopted === JSON.parse(adopted.toLowerCase()),
+        );
+      }
+
+      if (species) {
+        filteredPets = pets.filter(
+          (pet: Pet): boolean =>
+            pet.species.toLowerCase() === species.toLowerCase(),
         );
       }
 
