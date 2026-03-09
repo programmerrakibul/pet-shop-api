@@ -4,7 +4,7 @@ import { ResponseData } from "./types/response.js";
 import { pets } from "./data/pets.js";
 import type { Response, Request, Express } from "express";
 import type { Pet } from "./types/index.js";
-import type { GetPetQuery } from "./types/request.js";
+import type { GetPetsQuery, GetSinglePetParams } from "./types/request.js";
 
 const app: Express = express();
 const PORT: number = Number(process.env.PORT) || 8000;
@@ -21,7 +21,7 @@ app.get("/", (req: Request, res: Response<ResponseData<undefined>>): void => {
 app.get(
   "/api/v1/pets",
   (
-    req: Request<{}, {}, {}, GetPetQuery>,
+    req: Request<{}, {}, {}, GetPetsQuery>,
     res: Response<ResponseData<Pet>>,
   ): void => {
     try {
@@ -47,6 +47,41 @@ app.get(
         success: true,
         message: "Pets data retrieved successfully",
         data: filteredPets,
+      });
+    } catch (error) {
+      res.status(500).send({
+        success: false,
+        message: "Internal Server Error",
+      });
+    }
+  },
+);
+
+app.get(
+  "/api/v1/pets/:id",
+  (
+    req: Request<GetSinglePetParams>,
+    res: Response<ResponseData<Pet>>,
+  ): void | null => {
+    try {
+      const { id } = req.params;
+      const pet: Pet | undefined = pets.find(
+        (p: Pet): boolean => p.id === JSON.parse(id),
+      );
+
+      if (!pet) {
+        res.status(404).send({
+          success: false,
+          message: `Pet with id ${id} not found!`,
+        });
+
+        return null;
+      }
+
+      res.send({
+        success: true,
+        message: "Pet data retrieved successfully",
+        data: pet,
       });
     } catch (error) {
       res.status(500).send({
