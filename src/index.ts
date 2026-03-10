@@ -1,5 +1,6 @@
-import express from "express";
+import cors from "cors";
 import { config } from "dotenv";
+import express, { json } from "express";
 import { petsRouter } from "./routes/petsRouter.js";
 import type { ResponseData } from "./types/response.js";
 import type { Response, Request, Express } from "express";
@@ -8,6 +9,9 @@ config();
 
 const app: Express = express();
 const PORT: number = Number(process.env.PORT) || 8000;
+
+app.use(json());
+app.use(cors());
 
 app.get("/", (req: Request, res: Response<ResponseData<undefined>>): void => {
   res.send({
