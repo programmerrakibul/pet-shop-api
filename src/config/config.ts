@@ -7,4 +7,5 @@ export const config = {
   DB_URI: process.env.DB_URI,
   PORT: process.env.PORT,
   CLIENT_URL: process.env.CLIENT_URL,
+  NODE_ENV : process.env.NODE_ENV ,
 };
