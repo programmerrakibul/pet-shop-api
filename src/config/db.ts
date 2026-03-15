@@ -1,16 +1,14 @@
-import { config } from "dotenv";
+import { config } from "./config.js";
 import mongoose, { type mongo, type ConnectOptions } from "mongoose";
 
-config();
-
-const uri: string | undefined = process.env.DB_URI;
+const uri: string | undefined = config.DB_URI;
 
 if (!uri?.trim()) {
   throw new Error("DB_URI is not defined in the environment variables.");
 }
 
 const connectOptions: ConnectOptions = {
-  dbName: process.env.DB_NAME || "pet-shop",
+  dbName: config.DB_NAME || "pet-shop",
   serverApi: { version: "1", strict: true, deprecationErrors: true },
 };
 

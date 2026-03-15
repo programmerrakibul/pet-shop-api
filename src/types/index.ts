@@ -1,5 +1,10 @@
-export interface Pet {
-  readonly id: number;
+import { Document } from "mongoose";
+
+export interface TAppError extends Error {
+  statusCode?: number;
+}
+
+export interface TPet extends Document {
   name: string;
   species: string;
   breed: string;
@@ -7,10 +12,12 @@ export interface Pet {
   adopted: boolean;
   intakeDate: Date;
   adoptionDate?: Date;
+  photo: string;
   medicalRecord: {
     vaccinations: string[];
     weightKg: number;
     microchipId: null | string;
   };
-  photo: string;
+  createdAt: Date;
+  updatedAt: Date;
 }

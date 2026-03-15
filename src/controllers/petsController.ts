@@ -1,73 +1,23 @@
-import { pets } from "../data/pets.js";
-import type { Pet } from "../types/index.js";
-import type { GetPetsQuery, GetSinglePetParams } from "../types/request.js";
-import type { ResponseData } from "../types/response.js";
-import type { Response, Request } from "express";
+import { Pet } from "../models/Pet.js";
+import { InvalidDataError } from "../utils/errorHandler.js";
+import type { TPet } from "../types/index.js";
+import type { TResponse } from "../types/response.js";
+import type { Request, Response, NextFunction } from "express";
 
-export const getPets = (
-  req: Request<{}, {}, {}, GetPetsQuery>,
-  res: Response<ResponseData<Pet>>,
-): void => {
+export const getAllPetsData = async (
+  req: Request,
+  res: Response<TResponse<TPet>>,
+  next: NextFunction,
+): Promise<void> => {
   try {
-    const { adopted, species } = req.query;
-
-    let filteredPets: Pet[] = pets;
-
-    if (adopted) {
-      filteredPets = pets.filter(
-        (pet: Pet): boolean =>
-          pet.adopted === JSON.parse(adopted.toLowerCase()),
-      );
-    }
-
-    if (species) {
-      filteredPets = pets.filter(
-        (pet: Pet): boolean =>
-          pet.species.toLowerCase() === species.toLowerCase(),
-      );
-    }
+    const pets = await Pet.find({});
 
     res.send({
       success: true,
-      message: "Pets data retrieved successfully",
-      data: filteredPets,
+      message: "All Pets data retrieved successfully!",
+      data: pets || [],
     });
-  } catch (error) {
-    res.status(500).send({
-      success: false,
-      message: "Internal Server Error",
-    });
-  }
-};
-
-export const getSinglePet = (
-  req: Request<GetSinglePetParams>,
-  res: Response<ResponseData<Pet>>,
-): void => {
-  try {
-    const { id } = req.params;
-    const pet: Pet | undefined = pets.find(
-      (p: Pet): boolean => p.id.toString() === id,
-    );
-
-    if (!pet) {
-      res.status(404).send({
-        success: false,
-        message: `Pet with id ${id} not found!`,
-      });
-
-      return;
-    }
-
-    res.send({
-      success: true,
-      message: "Pet data retrieved successfully",
-      data: pet,
-    });
-  } catch (error) {
-    res.status(500).send({
-      success: false,
-      message: "Internal Server Error",
-    });
+  } catch (error: any) {
+    next(error);
   }
 };

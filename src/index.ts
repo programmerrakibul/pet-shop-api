@@ -1,33 +1,38 @@
 import cors from "cors";
 import express, { json } from "express";
 import { petsRouter } from "./routes/petsRouter.js";
-import type { ResponseData } from "./types/response.js";
+import type { TResponse } from "./types/response.js";
 import type { Response, Request, Express } from "express";
 import { connectDB } from "./config/db.js";
+import { globalErrorHandler } from "./utils/globalErrorHandler.js";
+import { config } from "./config/config.js";
 
 const app: Express = express();
-const PORT: number = Number(process.env.PORT) || 8000;
+const PORT: number = Number(config.PORT) || 8000;
 
 app.use(json());
-app.use(cors());
+app.use(
+  cors({
+    origin: [`http://localhost:${PORT}`],
+    credentials: true,
+  }),
+);
 
 const startServer = async (): Promise<void> => {
   try {
     await connectDB();
 
-    app.get(
-      "/",
-      (req: Request, res: Response<ResponseData<undefined>>): void => {
-        res.send({
-          success: true,
-          message: "Welcome to the Pet Shop API",
-        });
-      },
-    );
+    app.get("/", (req: Request, res: Response<TResponse<undefined>>): void => {
+      res.send({
+        success: true,
+        message: "Welcome to the Pet Shop API",
+      });
+    });
 
     app.use("/api/v1/pets", petsRouter);
+    app.use(globalErrorHandler);
 
-    app.use((req: Request, res: Response<ResponseData<undefined>>): void => {
+    app.use((req: Request, res: Response<TResponse<undefined>>): void => {
       res.status(404).send({
         success: false,
         message: "Route not found!",
@@ -37,8 +42,8 @@ const startServer = async (): Promise<void> => {
     app.listen(PORT, (): void =>
       console.log(`Server is running on port ${PORT}`),
     );
-  } catch (error) {
-    console.log("Error starting the server:", error);
+  } catch (error: any) {
+    console.log("Error starting the server:", (error as Error).message);
     process.exit(1);
   }
 };

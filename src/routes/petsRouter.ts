@@ -1,8 +1,6 @@
 import { Router } from "express";
-import { getPets, getSinglePet } from "../controllers/petsController.js";
+import { getAllPetsData } from "../controllers/petsController.js";
 
 export const petsRouter = Router();
 
-petsRouter.get("/", getPets);
-
-petsRouter.get("/:id", getSinglePet);
+petsRouter.get("/", getAllPetsData);
