@@ -1,10 +1,9 @@
 import mongoose from "mongoose";
-import type { TAppError } from "../types/index.js";
 import type { TResponse } from "../types/response.js";
 import type { NextFunction, Request, Response } from "express";
 
 export const globalErrorHandler = (
-  err: TAppError,
+  err: any,
   req: Request,
   res: Response<TResponse<undefined>>,
   next: NextFunction,
@@ -15,8 +14,12 @@ export const globalErrorHandler = (
   let message = err.message || "Internal Server Error!";
 
   if (err instanceof mongoose.Error.ValidationError) {
+    console.log(err.errors);
+
     statusCode = 400;
-    message = Object.values(err.errors)[0].message;
+    message = Object.values(err.errors)
+      .map((val) => val.message)
+      .join(", ");
   }
 
   res.status(statusCode).send({

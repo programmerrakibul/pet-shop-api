@@ -20,7 +20,7 @@ export class InvalidDataError extends AppError {
   }
 }
 
-export class DataNotFound extends AppError {
+export class NotFoundError extends AppError {
   public message: string;
 
   constructor(message: string = "Data Not found!") {

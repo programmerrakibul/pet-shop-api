@@ -13,7 +13,7 @@ const PORT: number = Number(config.PORT) || 8000;
 app.use(json());
 app.use(
   cors({
-    origin: [`http://localhost:${PORT}`],
+    origin: [`http://localhost:${PORT}`, config?.CLIENT_URL || false],
     credentials: true,
   }),
 );

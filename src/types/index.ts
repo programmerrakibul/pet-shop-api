@@ -1,7 +1,7 @@
 import { Document } from "mongoose";
 
 export interface TAppError extends Error {
-  statusCode?: number;
+  statusCode: number;
 }
 
 export interface TPet extends Document {
