@@ -49,7 +49,6 @@ const petSchema = new Schema<TPet>(
       type: String,
       required: [true, "Pet Photo is required!"],
       trim: true,
-      lowercase: true,
     },
     medicalRecord: {
       vaccinations: [

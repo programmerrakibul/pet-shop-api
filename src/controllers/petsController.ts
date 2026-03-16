@@ -1,8 +1,9 @@
 import { Pet } from "../models/Pet.js";
-import { InvalidDataError } from "../utils/errorHandler.js";
+import { InvalidDataError, NotFoundError } from "../utils/errorHandler.js";
 import type { TPet } from "../types/index.js";
 import type { TResponse } from "../types/response.js";
 import type { Request, Response, NextFunction } from "express";
+import { TSinglePetParams } from "../types/request.js";
 
 export const postPetData = async (
   req: Request<{}, {}, TPet>,
@@ -61,6 +62,30 @@ export const getAllPetsData = async (
       data: pets || [],
     });
   } catch (error: any) {
+    next(error);
+  }
+};
+
+export const getSinglePetData = async (
+  req: Request<TSinglePetParams>,
+  res: Response<TResponse<TPet>>,
+  next: NextFunction,
+): Promise<void> => {
+  try {
+    const { id } = req.params;
+
+    const pet = await Pet.findById(id).lean()
+
+    if (!pet) {
+      throw new NotFoundError(`Pet data not found for this id: ${id}`);
+    }
+
+    res.send({
+      success: true,
+      message: "Single Pet data retrieved successfully!",
+      data: pet,
+    });
+  } catch (error) {
     next(error);
   }
 };

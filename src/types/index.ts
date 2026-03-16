@@ -21,3 +21,16 @@ export interface TPet extends Document {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface TUser extends Document {
+  name: string;
+  email: string;
+  password?: string;
+  phoneNumber?: string;
+  address?: string;
+  role: "user" | "admin";
+  verified: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  lastLoggedIn: Date;
+}

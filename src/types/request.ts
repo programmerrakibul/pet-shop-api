@@ -3,6 +3,6 @@ export interface GetPetsQuery {
   species?: string;
 }
 
-export interface GetSinglePetParams {
+export interface TSinglePetParams {
   id: string;
 }
