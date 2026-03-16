@@ -1,9 +1,10 @@
 import { Pet } from "../models/Pet.js";
-import { InvalidDataError, NotFoundError } from "../utils/errorHandler.js";
+import { TSinglePetParams } from "../types/request.js";
+import { NotFoundError } from "../utils/errorHandler.js";
+
 import type { TPet } from "../types/index.js";
 import type { TResponse } from "../types/response.js";
 import type { Request, Response, NextFunction } from "express";
-import { TSinglePetParams } from "../types/request.js";
 
 export const postPetData = async (
   req: Request<{}, {}, TPet>,
@@ -11,11 +12,7 @@ export const postPetData = async (
   next: NextFunction,
 ): Promise<void> => {
   try {
-    const { medicalRecord, ...petData } = req.body || {};
-
-    if (Object.keys(petData).length === 0) {
-      throw new InvalidDataError("Pet data is required in the request body!");
-    }
+    const { medicalRecord, ...petData } = req.body;
 
     const newPet = new Pet({
       name: petData.name,
@@ -74,7 +71,7 @@ export const getSinglePetData = async (
   try {
     const { id } = req.params;
 
-    const pet = await Pet.findById(id).lean()
+    const pet = await Pet.findById(id).lean();
 
     if (!pet) {
       throw new NotFoundError(`Pet data not found for this id: ${id}`);

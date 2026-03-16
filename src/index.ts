@@ -1,11 +1,13 @@
 import cors from "cors";
 import express, { json } from "express";
 import { petsRouter } from "./routes/petsRouter.js";
-import type { TResponse } from "./types/response.js";
-import type { Response, Request, Express } from "express";
 import { connectDB } from "./config/db.js";
 import { globalErrorHandler } from "./utils/globalErrorHandler.js";
 import { config } from "./config/config.js";
+import { usersRouter } from "./routes/usersRouter.js";
+
+import type { TResponse } from "./types/response.js";
+import type { Response, Request, Express } from "express";
 
 const app: Express = express();
 const PORT: number = Number(config.PORT) || 8000;
@@ -30,6 +32,8 @@ const startServer = async (): Promise<void> => {
     });
 
     app.use("/api/v1/pets", petsRouter);
+    app.use("/api/v1/users", usersRouter);
+
     app.use(globalErrorHandler);
 
     app.use((req: Request, res: Response<TResponse<undefined>>): void => {

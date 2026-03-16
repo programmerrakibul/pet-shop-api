@@ -23,7 +23,7 @@ export interface TPet extends Document {
 }
 
 export interface TUser extends Document {
-  name: string;
+  name?: string;
   email: string;
   password?: string;
   phoneNumber?: string;

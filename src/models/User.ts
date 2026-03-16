@@ -1,14 +1,14 @@
 import { model, Schema } from "mongoose";
-import { TUser } from "../types/index.js";
 import { config } from "../config/config.js";
 import bcrypt from "bcryptjs";
+
+import type { TUser } from "../types/index.js";
 
 const userSchema = new Schema<TUser>(
   {
     name: {
       type: String,
       trim: true,
-      required: [true, "Name is required!"],
       minLength: [3, "Name must be at least 3 characters long!"],
       maxLength: [50, "Name must be at most 50 characters long!"],
     },
