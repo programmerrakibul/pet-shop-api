@@ -20,7 +20,7 @@ export const postUser = async (
       address: userData.address,
       role: userData.role,
       verified: userData.verified,
-    });
+    } as TUser);
 
     await newUser.save();
 

@@ -1,7 +1,7 @@
 import { model, Schema } from "mongoose";
-import type { TPet } from "../types/index.js";
+import type { TPetDocument } from "../types/index.js";
 
-const petSchema = new Schema<TPet>(
+const petSchema = new Schema<TPetDocument>(
   {
     name: {
       type: String,
@@ -35,8 +35,6 @@ const petSchema = new Schema<TPet>(
       type: Boolean,
       required: [true, "Pet Adoption Status is required!"],
       default: false,
-      trim: true,
-      lowercase: true,
     },
     intakeDate: {
       type: Date,
@@ -75,8 +73,8 @@ const petSchema = new Schema<TPet>(
   },
 );
 
-petSchema.pre<TPet>("save", function (): void {
+petSchema.pre<TPetDocument>("save", function (): void {
   this.updatedAt = new Date();
 });
 
-export const Pet = model<TPet>("Pet", petSchema);
+export const Pet = model<TPetDocument>("Pet", petSchema);

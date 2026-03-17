@@ -2,9 +2,9 @@ import { model, Schema } from "mongoose";
 import { config } from "../config/config.js";
 import bcrypt from "bcryptjs";
 
-import type { TUser } from "../types/index.js";
+import type { TUserDocument } from "../types/index.js";
 
-const userSchema = new Schema<TUser>(
+const userSchema = new Schema<TUserDocument>(
   {
     name: {
       type: String,
@@ -55,19 +55,22 @@ const userSchema = new Schema<TUser>(
   },
 );
 
-userSchema.pre<TUser>("save", async function (this: TUser): Promise<void> {
-  const today = new Date();
+userSchema.pre<TUserDocument>(
+  "save",
+  async function (this: TUserDocument): Promise<void> {
+    const today = new Date();
 
-  if (this.isNew) {
-    this.lastLoggedIn = today;
-  }
+    if (this.isNew) {
+      this.lastLoggedIn = today;
+    }
 
-  if (this.isModified("password")) {
-    const round = Number(config.SALT_ROUND) || 10;
-    this.password = await bcrypt.hash(this.password as string, round);
-  }
+    if (this.isModified("password")) {
+      const round = Number(config.SALT_ROUND) || 10;
+      this.password = await bcrypt.hash(this.password as string, round);
+    }
 
-  this.updatedAt = today;
-});
+    this.updatedAt = today;
+  },
+);
 
-export const User = model<TUser>("User", userSchema);
+export const User = model<TUserDocument>("User", userSchema);

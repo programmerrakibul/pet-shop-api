@@ -1,10 +1,6 @@
 import { Document } from "mongoose";
 
-export interface TAppError extends Error {
-  statusCode: number;
-}
-
-export interface TPet extends Document {
+export interface TPet {
   name: string;
   species: string;
   breed: string;
@@ -22,7 +18,9 @@ export interface TPet extends Document {
   updatedAt: Date;
 }
 
-export interface TUser extends Document {
+export interface TPetDocument extends TPet, Document {}
+
+export interface TUser {
   name?: string;
   email: string;
   password?: string;
@@ -34,3 +32,5 @@ export interface TUser extends Document {
   updatedAt: Date;
   lastLoggedIn: Date;
 }
+
+export interface TUserDocument extends TUser, Document {}

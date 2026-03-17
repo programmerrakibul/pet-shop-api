@@ -31,7 +31,7 @@ export const postPetData = async (
         weightKg: medicalRecord.weightKg,
         microchipId: medicalRecord.microchipId,
       },
-    });
+    } as TPet);
 
     await newPet.save();
 
