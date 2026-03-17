@@ -1,22 +1,11 @@
 import { Document } from "mongoose";
+import type z from "zod";
+import type { petSchemaZ } from "../validators/petsValidator.js";
 
-export interface TPet {
-  name: string;
-  species: string;
-  breed: string;
-  age: number;
-  adopted: boolean;
-  intakeDate: Date;
-  adoptionDate?: Date;
-  photo: string;
-  medicalRecord: {
-    vaccinations: string[];
-    weightKg: number;
-    microchipId: null | string;
-  };
-  createdAt: Date;
+export type TPet = z.infer<typeof petSchemaZ> & {
   updatedAt: Date;
-}
+  createdAt: Date;
+};
 
 export interface TPetDocument extends TPet, Document {}
 

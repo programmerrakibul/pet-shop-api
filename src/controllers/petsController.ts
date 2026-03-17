@@ -12,26 +12,7 @@ export const postPetData = async (
   next: NextFunction,
 ): Promise<void> => {
   try {
-    const { medicalRecord, ...petData } = req.body;
-
-    const newPet = new Pet({
-      name: petData.name,
-      species: petData.species,
-      breed: petData.breed,
-      age: petData.age,
-      adopted: petData.adopted,
-      intakeDate: petData.intakeDate,
-      adoptionDate: petData.adoptionDate,
-      photo: petData.photo,
-      medicalRecord: {
-        vaccinations:
-          typeof medicalRecord.vaccinations === "string"
-            ? (medicalRecord.vaccinations as string)?.split(",")
-            : medicalRecord.vaccinations,
-        weightKg: medicalRecord.weightKg,
-        microchipId: medicalRecord.microchipId,
-      },
-    } as TPet);
+    const newPet = new Pet(req.body);
 
     await newPet.save();
 

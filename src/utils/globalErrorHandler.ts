@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { ZodError } from "zod";
 
 import type { TResponse } from "../types/response.js";
 import type { NextFunction, Request, Response } from "express";
@@ -18,6 +19,13 @@ export const globalErrorHandler = (
     code?: number;
     keyValue?: Record<string, unknown>;
   };
+
+  if (err instanceof ZodError) {
+    const issues = Object.values(err.issues);
+
+    message = issues.map((val) => val.message).join(", ");
+    statusCode = 400;
+  }
 
   if (mongoError.code === 11000 && mongoError.keyValue) {
     statusCode = 400;

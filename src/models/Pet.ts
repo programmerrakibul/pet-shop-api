@@ -1,70 +1,50 @@
 import { model, Schema } from "mongoose";
+
 import type { TPetDocument } from "../types/index.js";
 
 const petSchema = new Schema<TPetDocument>(
   {
     name: {
       type: String,
-      required: [true, "Pet Name is required!"],
-      trim: true,
-      minLength: [3, "Pet Name must be at least 3 characters long!"],
-      maxLength: [50, "Pet Name must be at most 50 characters long!"],
+      required: true,
     },
     species: {
       type: String,
-      required: [true, "Pet Species is required!"],
-      trim: true,
-      minLength: [2, "Pet Species must be at least 2 characters long!"],
-      maxLength: [20, "Pet Species must be at most 20 characters long!"],
+      required: true,
     },
     breed: {
       type: String,
-      required: [true, "Pet Breed is required!"],
-      trim: true,
-      minLength: [3, "Pet Breed must be at least 3 characters long!"],
-      maxLength: [20, "Pet Breed must be at most 20 characters long!"],
+      required: true,
     },
     age: {
       type: Number,
-      required: [true, "Pet Age is required!"],
-      trim: true,
-      min: [1, "Pet Age must be at least 1 year old!"],
-      max: [7, "Pet Age must be at most 7 years old!"],
+      required: true,
     },
     adopted: {
       type: Boolean,
-      required: [true, "Pet Adoption Status is required!"],
       default: false,
     },
     intakeDate: {
       type: Date,
-      required: [true, "Pet Intake Date is required!"],
+      required: true,
     },
-    adoptionDate: {
-      type: Date,
-    },
+    adoptionDate: Date,
     photo: {
       type: String,
-      required: [true, "Pet Photo is required!"],
-      trim: true,
+      required: true,
     },
     medicalRecord: {
-      vaccinations: [
-        {
-          type: String,
-          trim: true,
-        },
-      ],
+      vaccinations: {
+        type: [String],
+        default: [],
+      },
       weightKg: {
         type: Number,
-        required: [true, "Pet Weight is required!"],
-        min: [1, "Pet Weight must be at least 1 KG!"],
-        max: [7, "Pet Weight must be at most 7 KG!"],
+        required: true,
       },
       microchipId: {
         type: String,
         default: null,
-        trim: true,
       },
     },
   },
@@ -72,9 +52,5 @@ const petSchema = new Schema<TPetDocument>(
     timestamps: true,
   },
 );
-
-petSchema.pre<TPetDocument>("save", function (): void {
-  this.updatedAt = new Date();
-});
 
 export const Pet = model<TPetDocument>("Pet", petSchema);

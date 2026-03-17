@@ -58,18 +58,14 @@ const userSchema = new Schema<TUserDocument>(
 userSchema.pre<TUserDocument>(
   "save",
   async function (this: TUserDocument): Promise<void> {
-    const today = new Date();
-
-    if (this.isNew) {
-      this.lastLoggedIn = today;
+    if (!this.isNew) {
+      this.lastLoggedIn = new Date();
     }
 
     if (this.isModified("password")) {
       const round = Number(config.SALT_ROUND) || 10;
       this.password = await bcrypt.hash(this.password as string, round);
     }
-
-    this.updatedAt = today;
   },
 );
 
