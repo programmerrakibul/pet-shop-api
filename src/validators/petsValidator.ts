@@ -4,17 +4,14 @@ export const petSchemaZ = z.object(
   {
     name: z
       .string("Pet Name must be a string!")
-      .trim()
       .min(3, "Pet Name must be at least 3 characters long!")
       .max(50, "Pet Name must be at most 50 characters long!"),
     species: z
       .string("Pet Species must be a string!")
-      .trim()
       .min(3, "Pet Species must be at least 3 characters long!")
       .max(20, "Pet Species must be at most 20 characters long!"),
     breed: z
       .string("Pet Breed must be a string!")
-      .trim()
       .min(3, "Pet Breed must be at least 3 characters long!")
       .max(20, "Pet Breed must be at most 20 characters long!"),
     age: z
@@ -26,10 +23,7 @@ export const petSchemaZ = z.object(
     adoptionDate: z.coerce
       .date("Adoption Date must be a valid date!")
       .optional(),
-    photo: z
-      .string("Pet Photo must be a string!")
-      .url("Invalid photo URL!")
-      .trim(),
+    photo: z.string("Pet Photo must be a string!").url("Invalid photo URL!"),
     medicalRecord: z.object(
       {
         vaccinations: z.preprocess(

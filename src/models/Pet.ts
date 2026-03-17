@@ -7,14 +7,17 @@ const petSchema = new Schema<TPetDocument>(
     name: {
       type: String,
       required: true,
+      trim: true,
     },
     species: {
       type: String,
       required: true,
+      trim: true,
     },
     breed: {
       type: String,
       required: true,
+      trim: true,
     },
     age: {
       type: Number,
@@ -32,6 +35,7 @@ const petSchema = new Schema<TPetDocument>(
     photo: {
       type: String,
       required: true,
+      trim: true,
     },
     medicalRecord: {
       vaccinations: {
