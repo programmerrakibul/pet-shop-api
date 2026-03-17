@@ -11,13 +11,22 @@ export const globalErrorHandler = (
 ): void => {
   console.log("From global error: ", err);
 
-  let statusCode = err.statusCode || 500;
-  let message = err.message || "Internal Server Error!";
+  let statusCode: number = err.statusCode || 500;
+  let message: string = err.message || "Internal Server Error!";
 
-  if (err.code === 11000) {
+  const mongoError = err as {
+    code?: number;
+    keyValue?: Record<string, unknown>;
+  };
+
+  if (mongoError.code === 11000 && mongoError.keyValue) {
     statusCode = 400;
-    message = Object.keys(err.keyValue)
-      .map((key) => `${key[0].toUpperCase() + key.slice(1)} is already exist!`)
+    const fields = Object.keys(mongoError.keyValue);
+    message = fields
+      .map(
+        (field) =>
+          `${field.charAt(0).toUpperCase() + field.slice(1)} is already exist!`,
+      )
       .join(", ");
   }
 

@@ -1,7 +1,7 @@
 import { Pet } from "../models/Pet.js";
-import { TSinglePetParams } from "../types/request.js";
 import { NotFoundError } from "../utils/errorHandler.js";
 
+import type { TSinglePetParams } from "../types/request.js";
 import type { TPet } from "../types/index.js";
 import type { TResponse } from "../types/response.js";
 import type { Request, Response, NextFunction } from "express";
