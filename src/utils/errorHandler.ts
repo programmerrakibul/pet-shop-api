@@ -26,7 +26,7 @@ export class NotFoundError extends AppError {
   constructor(message: string = "Data Not found!") {
     super(message);
 
-    this.name = "DataNotFoundError";
+    this.name = "NotFoundError";
     this.statusCode = 404;
     this.message = message;
   }

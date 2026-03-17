@@ -2,7 +2,7 @@ import cors from "cors";
 import express, { json } from "express";
 import { petsRouter } from "./routes/petsRouter.js";
 import { connectDB } from "./config/db.js";
-import { globalErrorHandler } from "./utils/globalErrorHandler.js";
+import { globalErrorHandler } from "./middlewares/globalErrorHandler.js";
 import { config } from "./config/config.js";
 import { usersRouter } from "./routes/usersRouter.js";
 
