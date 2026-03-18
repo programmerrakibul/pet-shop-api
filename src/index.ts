@@ -8,6 +8,7 @@ import { usersRouter } from "./routes/usersRouter.js";
 
 import type { TResponse } from "./types/response.js";
 import type { Response, Request, Express } from "express";
+import z from "zod";
 
 const app: Express = express();
 const PORT: number = Number(config.PORT) || 8000;

@@ -9,22 +9,17 @@ const userSchema = new Schema<TUserDocument>(
     name: {
       type: String,
       trim: true,
-      minLength: [3, "Name must be at least 3 characters long!"],
-      maxLength: [50, "Name must be at most 50 characters long!"],
     },
     email: {
       type: String,
       trim: true,
-      lowercase: true,
       unique: true,
-      required: [true, "Email is required!"],
+      required: true,
     },
     password: {
       type: String,
-      required: [true, "Password is required!"],
+      required: true,
       select: false,
-      minLength: [8, "Password must be at least 8 characters long!"],
-      maxLength: [20, "Password must be at most 20 characters long!"],
     },
     phoneNumber: Number,
     address: {
@@ -33,15 +28,12 @@ const userSchema = new Schema<TUserDocument>(
     },
     role: {
       type: String,
-      enum: {
-        values: ["user", "admin"],
-        message: "{VALUE is not a valid role! Role must be user or admin!}",
-      },
+      enum: ["user", "admin"],
       trim: true,
       lowercase: true,
       default: "user",
     },
-    verified: {
+    isVerified: {
       type: Boolean,
       default: false,
     },

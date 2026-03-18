@@ -6,27 +6,17 @@ import type { TResponse } from "../types/response.js";
 
 export const postUser = async (
   req: Request<{}, {}, TUser>,
-  res: Response<TResponse<TUser>>,
+  res: Response<TResponse<Omit<TUser, "password">>>,
   next: NextFunction,
 ) => {
   try {
-    const userData = req.body;
-
-    const newUser = new User({
-      name: userData.name,
-      email: userData.email,
-      password: userData.password,
-      phoneNumber: userData.phoneNumber,
-      address: userData.address,
-      role: userData.role,
-      verified: userData.verified,
-    } as TUser);
-
-    await newUser.save();
+    const newUser = new User(req.body);
+    const { password, ...user } = (await newUser.save()).toObject();
 
     res.status(201).send({
       success: true,
       message: "User data created successfully!",
+      data: user,
     });
   } catch (error) {
     next(error);
