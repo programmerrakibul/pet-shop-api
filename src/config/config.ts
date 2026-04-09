@@ -1,11 +1,15 @@
 import dotenv from "dotenv";
+import { envSchema } from "../validators/envValidator.js";
 
 dotenv.config();
 
-export const config = {
-  DB_NAME: process.env.DB_NAME,
-  DB_URI: process.env.DB_URI,
-  PORT: process.env.PORT,
-  CLIENT_URL: process.env.CLIENT_URL,
-  SALT_ROUND: process.env.SALT_ROUND,
-};
+const { success, data, error } = envSchema.safeParse(process.env);
+
+if (!success) {
+  const err = Object.values(error.issues)
+    .map((issue) => issue.message)
+    .join(", ");
+  throw new Error(err);
+}
+
+export const config = data;
