@@ -10,12 +10,12 @@ import type { TResponse } from "./types/response.js";
 import type { Response, Request, Express } from "express";
 
 const app: Express = express();
-const PORT: number = Number(config.PORT) || 8000;
+const PORT = config.PORT
 
 app.use(json());
 app.use(
   cors({
-    origin: [`http://localhost:${PORT}`, config.CLIENT_URL || false],
+    origin: [`http://localhost:${PORT}`, config.CLIENT_URL],
     credentials: true,
   }),
 );
@@ -24,7 +24,7 @@ const startServer = async (): Promise<void> => {
   try {
     await connectDB();
 
-    app.get("/", (req: Request, res: Response<TResponse<undefined>>): void => {
+    app.get("/", (_req: Request, res: Response<TResponse>): void => {
       res.send({
         success: true,
         message: "Welcome to the Pet Shop API",
@@ -36,7 +36,7 @@ const startServer = async (): Promise<void> => {
 
     app.use(globalErrorHandler);
 
-    app.use((req: Request, res: Response<TResponse<undefined>>): void => {
+    app.use((_req: Request, res: Response<TResponse>): void => {
       res.status(404).send({
         success: false,
         message: "Route not found!",
@@ -46,7 +46,7 @@ const startServer = async (): Promise<void> => {
     app.listen(PORT, (): void =>
       console.log(`Server is running on port ${PORT}`),
     );
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.log("Error starting the server:", (error as Error).message);
     process.exit(1);
   }

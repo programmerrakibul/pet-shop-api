@@ -9,8 +9,6 @@ export class AppError extends Error {
 }
 
 export class InvalidDataError extends AppError {
-  public message: string;
-
   constructor(message: string = "Invalid Data Provided!") {
     super(message);
 
@@ -21,8 +19,6 @@ export class InvalidDataError extends AppError {
 }
 
 export class NotFoundError extends AppError {
-  public message: string;
-
   constructor(message: string = "Data Not found!") {
     super(message);
 

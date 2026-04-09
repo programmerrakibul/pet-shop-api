@@ -1,5 +1,5 @@
+import type { TNodeEnv } from "@/types/index.js";
 import z from "zod";
-import type { TNodeEnv } from "../types/index.js";
 
 export const NodeEnv = {
   DEVELOPMENT: "development",

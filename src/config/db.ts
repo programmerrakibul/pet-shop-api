@@ -1,5 +1,5 @@
-import { config } from "./config.js";
 import mongoose, { type mongo, type ConnectOptions } from "mongoose";
+import { config } from "./config.js";
 
 const connectOptions: ConnectOptions = {
   dbName: config.DB_NAME || "pet-shop",

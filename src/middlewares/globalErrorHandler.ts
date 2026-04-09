@@ -1,14 +1,14 @@
 import mongoose from "mongoose";
 import { ZodError } from "zod";
 
-import type { TResponse } from "../types/response.js";
 import type { NextFunction, Request, Response } from "express";
+import type { TResponse } from "@/types/response.js";
 
 export const globalErrorHandler = (
   err: any,
-  req: Request,
-  res: Response<TResponse<undefined>>,
-  next: NextFunction,
+  _req: Request,
+  res: Response<TResponse>,
+  _next: NextFunction,
 ): void => {
   console.log("From global error: ", err);
 

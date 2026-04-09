@@ -1,8 +1,7 @@
-import { User } from "../models/User.js";
-
+import { User } from "@/models/User.js";
+import type { TUser } from "@/types/index.js";
+import type { TResponse } from "@/types/response.js";
 import type { Request, Response, NextFunction } from "express";
-import type { TUser } from "../types/index.js";
-import type { TResponse } from "../types/response.js";
 
 export const postUser = async (
   req: Request<{}, {}, TUser>,

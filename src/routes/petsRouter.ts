@@ -1,11 +1,11 @@
 import { Router } from "express";
+import { petSchemaZ } from "@/validators/petsValidator.js";
+import { validate } from "@/middlewares/validatorMiddleware.js";
 import {
   getAllPetsData,
   getSinglePetData,
   postPetData,
-} from "../controllers/petsController.js";
-import { validate } from "../middlewares/validatorMiddleware.js";
-import { petSchemaZ } from "../validators/petsValidator.js";
+} from "@/controllers/petsController.js";
 
 export const petsRouter = Router();
 

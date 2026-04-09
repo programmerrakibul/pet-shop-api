@@ -1,9 +1,8 @@
-import { Pet } from "../models/Pet.js";
-import { NotFoundError } from "../utils/errorHandler.js";
-
-import type { TSinglePetParams } from "../types/request.js";
-import type { TPet } from "../types/index.js";
-import type { TResponse } from "../types/response.js";
+import { Pet } from "@/models/Pet.js";
+import type { TPet } from "@/types/index.js";
+import type { TSinglePetParams } from "@/types/request.js";
+import type { TResponse } from "@/types/response.js";
+import { NotFoundError } from "@/utils/errorHandler.js";
 import type { Request, Response, NextFunction } from "express";
 
 export const postPetData = async (
@@ -27,7 +26,7 @@ export const postPetData = async (
 };
 
 export const getAllPetsData = async (
-  req: Request,
+  _req: Request,
   res: Response<TResponse<TPet>>,
   next: NextFunction,
 ): Promise<void> => {

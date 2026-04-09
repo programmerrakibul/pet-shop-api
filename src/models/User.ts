@@ -1,8 +1,7 @@
 import { model, Schema } from "mongoose";
-import { config } from "../config/config.js";
 import bcrypt from "bcryptjs";
-
-import type { TUserDocument } from "../types/index.js";
+import type { TUserDocument } from "@/types/index.js";
+import { config } from "@/config/config.js";
 
 const userSchema = new Schema<TUserDocument>(
   {
@@ -56,7 +55,7 @@ userSchema.pre<TUserDocument>(
 
     if (this.isModified("password")) {
       const round = Number(config.SALT_ROUND) || 10;
-      this.password = await bcrypt.hash(this.password as string, round);
+      this.password = await bcrypt.hash(this.password, round);
     }
   },
 );

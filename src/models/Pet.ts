@@ -1,6 +1,5 @@
+import type { TPetDocument } from "@/types/index.js";
 import { model, Schema } from "mongoose";
-
-import type { TPetDocument } from "../types/index.js";
 
 const petSchema = new Schema<TPetDocument>(
   {
