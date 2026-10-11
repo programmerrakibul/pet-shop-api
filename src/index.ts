@@ -1,16 +1,16 @@
 import cors from "cors";
 import express, { json } from "express";
-import { petsRouter } from "./routes/petsRouter.js";
+import { config } from "./config/config.js";
 import { connectDB } from "./config/db.js";
 import { globalErrorHandler } from "./middlewares/globalErrorHandler.js";
-import { config } from "./config/config.js";
+import { petsRouter } from "./routes/petsRouter.js";
 import { usersRouter } from "./routes/usersRouter.js";
 
+import type { Express, Request, Response } from "express";
 import type { TResponse } from "./types/response.js";
-import type { Response, Request, Express } from "express";
 
 const app: Express = express();
-const PORT = config.PORT
+const PORT = config.PORT;
 
 app.use(json());
 app.use(

@@ -53,6 +53,9 @@ const petSchema = new Schema<TPetDocument>(
   },
   {
     timestamps: true,
+    versionKey: false,
+    collection: "Pet",
+    id: true,
   },
 );
 

@@ -1,7 +1,7 @@
-import { model, Schema } from "mongoose";
-import bcrypt from "bcryptjs";
-import type { TUserDocument } from "@/types/index.js";
 import { config } from "@/config/config.js";
+import type { TUserDocument } from "@/types/index.js";
+import bcrypt from "bcryptjs";
+import { model, Schema } from "mongoose";
 
 const userSchema = new Schema<TUserDocument>(
   {
@@ -14,13 +14,17 @@ const userSchema = new Schema<TUserDocument>(
       trim: true,
       unique: true,
       required: true,
+      index: true,
     },
     password: {
       type: String,
       required: true,
       select: false,
     },
-    phoneNumber: Number,
+    phoneNumber: {
+      type: String,
+      default: "",
+    },
     address: {
       type: String,
       trim: true,
@@ -43,6 +47,9 @@ const userSchema = new Schema<TUserDocument>(
   },
   {
     timestamps: true,
+    versionKey: false,
+    collection: "User",
+    id: true,
   },
 );
 
