@@ -1,5 +1,5 @@
-import mongoose, { type mongo, type ConnectOptions } from "mongoose";
-import { config } from "./config.js";
+import mongoose, { type ConnectOptions, type mongo } from "mongoose";
+import { config } from "../config/config.js";
 
 const connectOptions: ConnectOptions = {
   dbName: config.DB_NAME || "pet-shop",
@@ -18,7 +18,7 @@ export const connectDB = async (): Promise<void> => {
 
     await db.admin().command({ ping: 1 });
 
-    console.log("You successfully connected to MongoDB!");
+    console.info("✅ You successfully connected to MongoDB!");
   } catch (err) {
     throw err;
   }

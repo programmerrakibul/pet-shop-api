@@ -1,9 +1,10 @@
+import { redisClient } from "@/lib/redis.js";
 import { Pet } from "@/models/Pet.js";
 import type { TPet } from "@/types/index.js";
 import type { TSinglePetParams } from "@/types/request.js";
 import type { TResponse } from "@/types/response.js";
 import { NotFoundError } from "@/utils/errorHandler.js";
-import type { Request, Response, NextFunction } from "express";
+import type { NextFunction, Request, Response } from "express";
 
 export const postPetData = async (
   req: Request<{}, {}, TPet>,
@@ -31,7 +32,23 @@ export const getAllPetsData = async (
   next: NextFunction,
 ): Promise<void> => {
   try {
+    const key = "pets";
+    const cached = await redisClient.get(key);
+
+    if (cached) {
+      const pets: TPet[] = JSON.parse(cached);
+
+      res.send({
+        success: true,
+        message: "All Pets data retrieved successfully!",
+        data: pets || [],
+      });
+
+      return;
+    }
+
     const pets = await Pet.find({});
+    await redisClient.set(key, JSON.stringify(pets));
 
     res.send({
       success: true,

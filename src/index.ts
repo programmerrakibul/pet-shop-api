@@ -1,13 +1,14 @@
+import { config } from "@/config/config.js";
+import { connectDB } from "@/lib/db.js";
+import { globalErrorHandler } from "@/middlewares/globalErrorHandler.js";
+import { petsRouter } from "@/routes/petsRouter.js";
+import { usersRouter } from "@/routes/usersRouter.js";
 import cors from "cors";
 import express, { json } from "express";
-import { config } from "./config/config.js";
-import { connectDB } from "./config/db.js";
-import { globalErrorHandler } from "./middlewares/globalErrorHandler.js";
-import { petsRouter } from "./routes/petsRouter.js";
-import { usersRouter } from "./routes/usersRouter.js";
 
+import { connectRedisClient } from "@/lib/redis.js";
+import type { TResponse } from "@/types/response.js";
 import type { Express, Request, Response } from "express";
-import type { TResponse } from "./types/response.js";
 
 const app: Express = express();
 const PORT = config.PORT;
@@ -15,7 +16,7 @@ const PORT = config.PORT;
 app.use(json());
 app.use(
   cors({
-    origin: [`http://localhost:${PORT}`, config.CLIENT_URL],
+    origin: [...new Set([...config.ALLOWED_ORIGINS, config.CLIENT_URL])],
     credentials: true,
   }),
 );
@@ -23,6 +24,7 @@ app.use(
 const startServer = async (): Promise<void> => {
   try {
     await connectDB();
+    await connectRedisClient();
 
     app.get("/", (_req: Request, res: Response<TResponse>): void => {
       res.send({
@@ -44,10 +46,10 @@ const startServer = async (): Promise<void> => {
     });
 
     app.listen(PORT, (): void =>
-      console.log(`Server is running on port ${PORT}`),
+      console.info(`✅ Server is running on port ${PORT}`),
     );
   } catch (error: unknown) {
-    console.log("Error starting the server:", (error as Error).message);
+    console.error("Error starting the server:", (error as Error).message);
     process.exit(1);
   }
 };

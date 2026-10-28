@@ -9,6 +9,7 @@ if (!success) {
   const err = Object.values(error.issues)
     .map((issue) => issue.message)
     .join(", ");
+
   throw new Error(err);
 }
 
